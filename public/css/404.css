@@ -1,0 +1,139 @@
+/* Cara animada de la página 404. El color usa las variables
+   del tema del sitio (tema.css) en vez de color-scheme propio,
+   para que respete el selector de modo claro/oscuro del navbar. */
+
+.pagina-404 {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 1.5rem;
+	min-height: 60vh;
+	padding: 2rem 1rem;
+	text-align: center;
+}
+
+.pagina-404__texto {
+	margin: 0;
+	color: var(--nav-text, #6b7280);
+}
+
+.pagina-404__volver {
+	color: var(--nav-accent, #4f46e5);
+	text-decoration: none;
+	font-weight: 600;
+}
+
+.pagina-404__volver:hover {
+	text-decoration: underline;
+}
+
+.face {
+	display: block;
+	width: 12em;
+	height: auto;
+	color: var(--nav-text-active, #111827);
+
+	&__eyes,
+	&__eye-lid,
+	&__mouth-left,
+	&__mouth-right,
+	&__nose,
+	&__pupil {
+		animation: eyes 1s 0.3s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+	}
+	&__eye-lid,
+	&__pupil {
+		animation-duration: 4s;
+		animation-delay: 1.3s;
+		animation-iteration-count: infinite;
+	}
+	&__eye-lid {
+		animation-name: eye-lid;
+	}
+	&__mouth-left,
+	&__mouth-right {
+		animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+	}
+	&__mouth-left {
+		animation-name: mouth-left;
+	}
+	&__mouth-right {
+		animation-name: mouth-right;
+	}
+	&__nose {
+		animation-name: nose;
+	}
+	&__pupil {
+		animation-name: pupil;
+	}
+}
+
+/* Animations */
+@keyframes eye-lid {
+	from,
+	40%,
+	45%,
+	to {
+		transform: translateY(0);
+	}
+	42.5% {
+		transform: translateY(17.5px);
+	}
+}
+@keyframes eyes {
+	from {
+		transform: translateY(112.5px);
+	}
+	to {
+		transform: translateY(15px);
+	}
+}
+@keyframes pupil {
+	from,
+	37.5%,
+	40%,
+	45%,
+	87.5%,
+	to {
+		stroke-dashoffset: 0;
+		transform: translate(0, 0);
+	}
+	12.5%,
+	25%,
+	62.5%,
+	75% {
+		stroke-dashoffset: 0;
+		transform: translate(-35px, 0);
+	}
+	42.5% {
+		stroke-dashoffset: 35;
+		transform: translate(0, 17.5px);
+	}
+}
+@keyframes mouth-left {
+	from,
+	50% {
+		stroke-dashoffset: -102;
+	}
+	to {
+		stroke-dashoffset: 0;
+	}
+}
+@keyframes mouth-right {
+	from,
+	50% {
+		stroke-dashoffset: 102;
+	}
+	to {
+		stroke-dashoffset: 0;
+	}
+}
+@keyframes nose {
+	from {
+		transform: translate(0, 0);
+	}
+	to {
+		transform: translate(0, 22.5px);
+	}
+}
