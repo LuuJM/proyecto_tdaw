@@ -12,12 +12,12 @@ aplicacion.use(express.static(__dirname + '/public'));
 
 aplicacion.use("/", require('./router/rutasPagina'));
 
-aplicacion.get('/', (req, resp) =>{
+aplicacion.get('/', (req, resp) => {
     resp.send('Pagina de inicio')
 });
 
-aplicacion.use((req,resp,next) => {
-    resp.status(404).render('404',{
+aplicacion.use((req, resp, next) => {
+    resp.status(404).render('404', {
         usuario: "Juan",
         apellido: "Cortez"
     })
