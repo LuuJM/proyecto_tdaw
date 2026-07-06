@@ -1,8 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= tituloPagina %></title>
-
+    <script>
+        // Se ejecuta antes de pintar la página para que, si el usuario ya eligió
+        // modo oscuro antes, no se vea un parpadeo en claro al cargar.
+        (function () {
+            if (localStorage.getItem('tema') === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/tema.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <% if (typeof hojaEstilo !== 'undefined') { %>
+    <link rel="stylesheet" href="<%= hojaEstilo %>">
+    <% } %>
 </head>
+<body>
+
+<header class="navbar">
+    <div class="navbar__inner">
+
+        <button type="button" class="navbar__hamburger" id="btnMenuMovil" aria-label="Abrir menú" aria-expanded="false" aria-controls="panelMovil">
+            <span></span><span></span><span></span>
+        </button>
+
+        <a href="/inicio" class="navbar__brand">
+            <img src="/images/icons/book.svg" alt="" class="navbar__brand-icon">
+            <span></span>
+        </a>
+
+        <ul class="navbar__links">
+            <li><a href="/inicio" class="navbar__link <%= rutaActual === '/inicio' ? 'is-active' : '' %>">Inicio</a></li>
+            <li><a href="/catalogo" class="navbar__link <%= rutaActual === '/catalogo' ? 'is-active' : '' %>">Catálogo</a></li>
+            <% if (usuarioAutenticado) { %>
+            <li><a href="/cuenta" class="navbar__link <%= rutaActual === '/cuenta' ? 'is-active' : '' %>">Mi cuenta</a></li>
+            <% } %>
+        </ul>
+
+        <div class="navbar__search" id="buscadorNav">
+            <button type="button" class="navbar__search-toggle" id="btnBuscador" aria-label="Buscar" aria-expanded="false">
+                <img src="/images/icons/search.svg" alt="">
+            </button>
+            <form class="navbar__search-form" action="/catalogo" method="get">
+                <img src="/images/icons/search.svg" alt="" class="navbar__search-icon">
+                <input type="search" name="q" placeholder="Buscar libros..." class="navbar__search-input" aria-label="Buscar libros">
+            </form>
+        </div>
+
+        <div class="navbar__actions">
+            <button type="button" class="navbar__theme-toggle" id="btnTema" aria-label="Cambiar entre modo claro y oscuro">
+                <img src="/images/icons/sun.svg" alt="" class="navbar__theme-icon navbar__theme-icon--sun">
+                <img src="/images/icons/moon.svg" alt="" class="navbar__theme-icon navbar__theme-icon--moon">
+            </button>
+            <% if (!usuarioAutenticado) { %>
+            <a href="/inicio-sesion" class="btn btn--ghost">Iniciar sesión</a>
+            <a href="/registro" class="btn btn--solid">Registrarse</a>
+            <% } else { %>
+            <a href="/notificaciones" class="navbar__icon-btn" aria-label="Notificaciones">
+                <img src="/images/icons/bell-fill.svg" alt="">
+            </a>
+            <div class="navbar__profile" id="perfilNav">
+                <button type="button" class="navbar__avatar" id="btnAvatar" aria-haspopup="true" aria-expanded="false">
+                    <%= usuario.charAt(0).toUpperCase() %>
+                </button>
+                <div class="navbar__dropdown" id="dropdownPerfil">
+                    <a href="/perfil">Perfil</a>
+                    <a href="/prestamos">Mis préstamos</a>
+                    <a href="/logout">Cerrar sesión</a>
+                </div>
+            </div>
+            <% } %>
+        </div>
+
+    </div>
+
+    <div class="navbar__mobile-panel" id="panelMovil">
+        <form class="navbar__search-form navbar__search-form--mobile" action="/catalogo" method="get">
+            <img src="/images/icons/search.svg" alt="" class="navbar__search-icon">
+            <input type="search" name="q" placeholder="Buscar libros..." class="navbar__search-input" aria-label="Buscar libros">
+        </form>
+
+        <ul class="navbar__links--mobile">
+            <li><a href="/inicio" class="<%= rutaActual === '/inicio' ? 'is-active' : '' %>">Inicio</a></li>
+            <li><a href="/catalogo" class="<%= rutaActual === '/catalogo' ? 'is-active' : '' %>">Catálogo</a></li>
+            <% if (usuarioAutenticado) { %>
+            <li><a href="/cuenta" class="<%= rutaActual === '/cuenta' ? 'is-active' : '' %>">Mi cuenta</a></li>
+            <% } %>
+        </ul>
+
+        <div class="navbar__mobile-profile">
+            <% if (!usuarioAutenticado) { %>
+            <a href="/inicio-sesion" class="btn btn--ghost">Iniciar sesión</a>
+            <a href="/registro" class="btn btn--solid">Registrarse</a>
+            <% } else { %>
+            <a href="/perfil">Perfil</a>
+            <a href="/prestamos">Mis préstamos</a>
+            <a href="/notificaciones">Notificaciones</a>
+            <a href="/logout">Cerrar sesión</a>
+            <% } %>
+        </div>
+    </div>
+</header>

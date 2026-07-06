@@ -72,6 +72,25 @@ router.get('/catalogo', (req,resp) => {
     })
 });
 
+// Rutas privadas: mientras no exista sesión real, forzamos
+// usuarioAutenticado = true para simular al lector con cuenta.
+// Va con la lista explícita de rutas (no un router.use general)
+// para que una URL que no coincide con nada no la herede camino al 404.
+const rutasPrivadas = [
+    '/account', '/cuenta',
+    '/favorites', '/favoritos',
+    '/fines', '/multas',
+    '/loans', '/prestamos',
+    '/notifications', '/notificaciones',
+    '/profile', '/perfil',
+    '/reservations', '/reservas'
+];
+
+router.use(rutasPrivadas, (req, resp, next) => {
+    resp.locals.usuarioAutenticado = true;
+    next();
+});
+
 router.get('/account', (req,resp) => {
     resp.render('private/account', {
         usuario: "Juan",

@@ -10,6 +10,14 @@ aplicacion.set("views", __dirname + "/views");
 
 aplicacion.use(express.static(__dirname + '/public'));
 
+// Datos disponibles en todas las vistas (header/footer) sin repetirlos en cada render().
+// usuarioAutenticado se sobreescribe a true dentro de las rutas privadas (ver rutasPagina.js).
+aplicacion.use((req, resp, next) => {
+    resp.locals.rutaActual = req.path;
+    resp.locals.usuarioAutenticado = false;
+    next();
+});
+
 aplicacion.use("/", require('./router/rutasPagina'));
 
 aplicacion.get('/', (req, resp) => {

@@ -70,11 +70,10 @@ Colecciones de MongoDB definidas (sin rol admin, por ahora no se necesitan opera
 
 - Servidor Express funcional, sirviendo vistas EJS placeholder (sin contenido real todavía)
 - Rutas de página ya definidas para todas las vistas listadas arriba
-- `header.ejs` tiene un navbar de Tailwind Plus mal ubicado (dentro de `<head>`) y con licencia no disponible — **hay que reemplazarlo** por un navbar propio (HTML/CSS o Bootstrap)
 - No existe carpeta `public/` — hay que crearla para CSS/JS estáticos
 - `models/` está vacío — no hay ningún schema de Mongoose
 - No hay controllers, ni lógica de autenticación, sesiones, ni conexión a MongoDB implementada aún
-- `footer.ejs` y `views/private/account.ejs` están vacíos
+- `footer.ejs` está vacío
 
 ## Cómo quiero que trabajes
 

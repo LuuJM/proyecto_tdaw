@@ -1,0 +1,68 @@
+/* =========================================================
+   Modo oscuro — Biblioteca
+   Por defecto la página es clara (ver :root en navbar.css).
+   Cuando <html data-theme="dark">, se sobreescriben las
+   mismas variables que ya usan navbar.css y footer.css.
+   ========================================================= */
+
+html[data-theme="dark"] {
+    --nav-bg: #111827;
+    --nav-border: rgba(255, 255, 255, 0.08);
+    --nav-text: #cbd5e1;
+    --nav-text-muted: #94a3b8;
+    --nav-text-active: #ffffff;
+    --nav-accent: #6366f1;
+    --nav-accent-hover: #818cf8;
+    --nav-surface: rgba(255, 255, 255, 0.06);
+    --nav-surface-hover: rgba(255, 255, 255, 0.1);
+
+    --body-bg: #0b0f19;
+    --body-text: #e5e7eb;
+}
+
+html[data-theme="dark"] .site-footer {
+    background-color: #0d1220;
+}
+
+/* Los iconos son SVG en negro (fill de la imagen, no currentColor real
+   porque se cargan con <img>); en oscuro se invierten para verse claros. */
+html[data-theme="dark"] .navbar img,
+html[data-theme="dark"] .site-footer img {
+    filter: invert(1);
+}
+
+/* ---------- Botón de cambio de tema ---------- */
+
+.navbar__theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.navbar__theme-toggle:hover {
+    background-color: var(--nav-surface);
+}
+
+.navbar__theme-icon {
+    width: 18px;
+    height: 18px;
+    opacity: 0.75;
+}
+
+.navbar__theme-icon--moon {
+    display: none;
+}
+
+html[data-theme="dark"] .navbar__theme-icon--sun {
+    display: none;
+}
+
+html[data-theme="dark"] .navbar__theme-icon--moon {
+    display: block;
+}
