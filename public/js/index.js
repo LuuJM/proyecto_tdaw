@@ -1,0 +1,369 @@
+function inicializarHero() {
+    var columnas = document.querySelectorAll('.container_page_1 .column');
+
+    columnas.forEach(function (columna) {
+        columna.addEventListener('mouseenter', function () {
+            columnas.forEach(function (otra) {
+                otra.classList.remove('active');
+            });
+            columna.classList.add('active');
+        });
+    });
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', inicializarHero);
+} else {
+    inicializarHero();
+}
+
+function inicializarGeneros() {
+    var seccion = document.querySelector('.generos');
+    if (!seccion) return;
+
+    var slide = seccion.querySelector('.slide');
+    var btnPrev = seccion.querySelector('.button .prev');
+    var btnNext = seccion.querySelector('.button .next');
+    var animando = false;
+
+    // El slide no usa clones: como el CSS solo depende de nth-child,
+    // basta mover el primer/último .item de posición para que el resto
+    // se recalcule y la transición de .item anime el cambio.
+    function terminarAnimacion() {
+        animando = false;
+    }
+
+    function siguiente() {
+        if (animando) return;
+        animando = true;
+        var primero = slide.querySelector('.item');
+        slide.appendChild(primero);
+        setTimeout(terminarAnimacion, 500);
+    }
+
+    function anterior() {
+        if (animando) return;
+        animando = true;
+        var items = slide.querySelectorAll('.item');
+        var ultimo = items[items.length - 1];
+        slide.prepend(ultimo);
+        setTimeout(terminarAnimacion, 500);
+    }
+
+    btnNext.addEventListener('click', siguiente);
+    btnPrev.addEventListener('click', anterior);
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', inicializarGeneros);
+} else {
+    inicializarGeneros();
+}
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Configuration - dynamic based on screen size
+  let itemsPerSlide = window.innerWidth < 720 ? 1 : 3; // Responsive items per slide
+  const totalItems = 9; // Total real items (without clones)
+  let slideBy = window.innerWidth < 720 ? 1 : 1; // How many items to advance/retreat per click
+
+  // DOM elements
+  const carousel = document.getElementById("multiCarousel");
+  const carouselInner = document.getElementById("carouselInner");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+
+  // Function to update configuration based on screen size
+  function updateConfig() {
+    const isMobile = window.innerWidth < 720;
+    itemsPerSlide = isMobile ? 1 : 3;
+    slideBy = isMobile ? 1 : 1;
+  }
+
+  // Dynamically add clone elements
+  function initializeClones() {
+    const originalItems = Array.from(
+      document.querySelectorAll(".multi-carousel-item:not(.clone)")
+    );
+
+    // Clear existing clones
+    document.querySelectorAll(".clone").forEach((clone) => clone.remove());
+
+    // Prepend clones of last items
+    const lastClones = originalItems
+      .slice(-itemsPerSlide)
+      .map((item) => {
+        const clone = item.cloneNode(true);
+        clone.classList.add("clone");
+        return clone;
+      })
+      .reverse();
+    lastClones.forEach((clone) => carouselInner.prepend(clone));
+
+    // Append clones of first items
+    const firstClones = originalItems.slice(0, itemsPerSlide).map((item) => {
+      const clone = item.cloneNode(true);
+      clone.classList.add("clone");
+      return clone;
+    });
+    firstClones.forEach((clone) => carouselInner.append(clone));
+  }
+
+  // Initial setup
+  updateConfig();
+  initializeClones();
+
+  // Start with the first real set of images
+  let currentIndex = 0; // Index of current visible center image (0 to totalItems-1)
+  let position = itemsPerSlide; // Real position considering clones
+  let isAnimating = false;
+
+  // Update carousel position
+  function updateCarouselPosition(animate = true) {
+    if (animate) {
+      carouselInner.style.transition = "transform 0.5s ease";
+    } else {
+      carouselInner.style.transition = "none";
+    }
+
+    const translateX = (position * -100) / itemsPerSlide;
+    carouselInner.style.transform = `translateX(${translateX}%)`;
+  }
+
+  // Initialize position
+  updateCarouselPosition(false);
+
+  // Handle transition end
+  carouselInner.addEventListener("transitionend", function () {
+    isAnimating = false;
+
+    // Handle infinite loop logic
+    if (position >= totalItems + itemsPerSlide) {
+      position = itemsPerSlide + (position - (totalItems + itemsPerSlide));
+      updateCarouselPosition(false);
+    } else if (position < itemsPerSlide) {
+      position = totalItems + position;
+      updateCarouselPosition(false);
+    }
+
+    currentIndex = (position - itemsPerSlide) % totalItems;
+  });
+
+  // Navigation functions
+  function next() {
+    if (isAnimating) return;
+    isAnimating = true;
+    position += slideBy;
+    updateCarouselPosition();
+  }
+
+  function prev() {
+    if (isAnimating) return;
+    isAnimating = true;
+    position -= slideBy;
+    updateCarouselPosition();
+  }
+
+  // Event listeners for buttons
+  nextBtn.addEventListener("click", next);
+  prevBtn.addEventListener("click", prev);
+
+  // Mouse drag functionality
+  let isDragging = false;
+  let startX = 0;
+  let startPosition = 0;
+
+  // Prevent image drag
+  const carouselImages = document.querySelectorAll("#carouselInner img");
+  carouselImages.forEach((img) => {
+    img.addEventListener("dragstart", (e) => {
+      e.preventDefault();
+    });
+    img.style.pointerEvents = "none";
+  });
+
+  carousel.addEventListener("mousedown", startDrag);
+  carousel.addEventListener("touchstart", startDrag, { passive: true });
+
+  carousel.addEventListener("mousemove", drag);
+  carousel.addEventListener("touchmove", drag, { passive: true });
+
+  carousel.addEventListener("mouseup", endDrag);
+  carousel.addEventListener("touchend", endDrag);
+  carousel.addEventListener("mouseleave", endDrag);
+
+  function startDrag(e) {
+    if (e.target.tagName === "IMG") {
+      e.preventDefault();
+    }
+
+    if (isAnimating) return;
+
+    isDragging = true;
+    startX = e.type.includes("mouse") ? e.clientX : e.touches[0].clientX;
+    startPosition = position;
+    carousel.classList.add("dragging");
+    carouselInner.style.transition = "none";
+    document.body.style.cursor = "grabbing";
+    document.body.style.userSelect = "none";
+    registerUserActivity();
+  }
+
+  function drag(e) {
+    if (!isDragging) return;
+
+    const x = e.type.includes("mouse") ? e.clientX : e.touches[0].clientX;
+    const walk = ((x - startX) / carousel.offsetWidth) * itemsPerSlide;
+    const newPosition = startPosition - walk;
+    const translateX = (newPosition * -100) / itemsPerSlide;
+    carouselInner.style.transform = `translateX(${translateX}%)`;
+  }
+
+  function endDrag(e) {
+    if (!isDragging) return;
+
+    isDragging = false;
+    carousel.classList.remove("dragging");
+    document.body.style.cursor = "";
+    document.body.style.userSelect = "";
+    carouselInner.style.transition = "transform 0.5s ease";
+
+    const x = e.type?.includes("mouse")
+      ? e.clientX
+      : e.changedTouches
+      ? e.changedTouches[0].clientX
+      : startX;
+    const walk = ((x - startX) / carousel.offsetWidth) * itemsPerSlide;
+
+    if (walk > 0.2) {
+      prev();
+    } else if (walk < -0.2) {
+      next();
+    } else {
+      updateCarouselPosition();
+    }
+
+    registerUserActivity();
+  }
+
+  // Keyboard navigation
+  document.addEventListener("keydown", function (e) {
+    if (
+      carousel.offsetParent === null ||
+      document.activeElement.tagName === "INPUT" ||
+      document.activeElement.tagName === "TEXTAREA" ||
+      document.activeElement.isContentEditable
+    ) {
+      return;
+    }
+
+    switch (e.key) {
+      case "ArrowLeft":
+        e.preventDefault();
+        prev();
+        registerUserActivity();
+        break;
+      case "ArrowRight":
+        e.preventDefault();
+        next();
+        registerUserActivity();
+        break;
+    }
+  });
+
+  // Auto-advance system
+  let autoAdvanceInterval;
+  let userActivityTimeout;
+
+  function startAutoAdvance() {
+    clearInterval(autoAdvanceInterval);
+    autoAdvanceInterval = setInterval(next, 5000);
+  }
+
+  function resetAutoAdvanceTimer() {
+    clearTimeout(userActivityTimeout);
+    clearInterval(autoAdvanceInterval);
+    userActivityTimeout = setTimeout(startAutoAdvance, 10000);
+  }
+
+  function registerUserActivity() {
+    resetAutoAdvanceTimer();
+  }
+
+  startAutoAdvance();
+
+  carousel.addEventListener("mouseenter", () => {
+    clearInterval(autoAdvanceInterval);
+  });
+
+  carousel.addEventListener("mouseleave", () => {
+    resetAutoAdvanceTimer();
+  });
+
+  carousel.addEventListener("click", registerUserActivity);
+  carousel.addEventListener("wheel", registerUserActivity);
+
+  // Handle window resize
+  window.addEventListener("resize", function () {
+    const wasMobile = itemsPerSlide === 1;
+    updateConfig();
+
+    // Only reinitialize if mobile state changed
+    if (
+      (wasMobile && itemsPerSlide > 1) ||
+      (!wasMobile && itemsPerSlide === 1)
+    ) {
+      initializeClones();
+      position = itemsPerSlide; // Reset position
+      updateCarouselPosition(false);
+    }
+  });
+});
+
+
+var multipleCardCarousel = document.querySelector("#carouselExampleControls");
+
+if (window.matchMedia("(min-width: 576px)").matches) {
+  var carousel = new bootstrap.Carousel(multipleCardCarousel, {
+    interval: false
+  });
+  var carouselWidth = $(".carousel-inner")[0].scrollWidth;
+  var cardWidth = $(".carousel-item").width();
+  var scrollPosition = 0;
+  $("#carouselExampleControls .carousel-control-next").on("click", function () {
+    if (scrollPosition < carouselWidth - cardWidth * 3) {
+      scrollPosition += cardWidth;
+      $("#carouselExampleControls .carousel-inner").animate(
+        { scrollLeft: scrollPosition },
+        600
+      );
+    }
+  });
+  $("#carouselExampleControls .carousel-control-prev").on("click", function () {
+    if (scrollPosition > 0) {
+      scrollPosition -= cardWidth;
+      $("#carouselExampleControls .carousel-inner").animate(
+        { scrollLeft: scrollPosition },
+        600
+      );
+    }
+  });
+} else {
+  $(multipleCardCarousel).addClass("slide");
+}
+
+
+"use strict";
+
+let next = document.querySelector(".next");
+let prev = document.querySelector(".prev");
+
+next.addEventListener("click", function () {
+  let items = document.querySelectorAll(".item");
+  document.querySelector(".slide").appendChild(items[0]);
+});
+
+prev.addEventListener("click", function () {
+  let items = document.querySelectorAll(".item");
+  document.querySelector(".slide").prepend(items[items.length - 1]);
+});

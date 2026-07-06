@@ -72,6 +72,13 @@ router.get('/catalogo', (req,resp) => {
     })
 });
 
+// A partir de aquí, rutas privadas: mientras no exista sesión real,
+// forzamos usuarioAutenticado = true para simular al lector con cuenta.
+router.use((req, resp, next) => {
+    resp.locals.usuarioAutenticado = true;
+    next();
+});
+
 router.get('/account', (req,resp) => {
     resp.render('private/account', {
         usuario: "Juan",

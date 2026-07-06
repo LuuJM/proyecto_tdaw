@@ -1,0 +1,888 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.container_page_1 {
+    width: 100%;
+    height: 100vh;
+    /* background-color: red; */
+/*     scroll-snap-align: center; */
+    overflow: hidden;
+  position: relative;
+}
+
+.container_page_1 .column {
+    width: 25%;
+    height: 100%;
+    float: left;
+    border-right: 2px solid rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+    z-index: 1;
+}
+
+.container_page_1 .column:last-child {
+    border-right: none;
+}
+
+.container_page_1 .column .content {
+    position: relative;
+    height: 100%;
+}
+
+.container_page_1 .column .content h1 {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    background: rgba(0, 0, 0, .1);
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    color: rgba(255, 255, 255, .2);
+    font-size: 15em;
+    border-top: 2px solid rgba(0, 0, 0, 0.5);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+}
+
+.container_page_1 .column .content .box {
+    position: absolute;
+    top: 50%;
+    transform: translateY(100%);
+    box-sizing: border-box;
+    padding: 40px;
+    background: rgba(255, 255, 255, 1);
+    text-align: center;
+    transition: 0.5s;
+    opacity: 0;
+    z-index: 1;
+}
+
+.container_page_1 .column.active .content .box {
+    opacity: 1;
+    transform: translateY(-50%);
+}
+
+.container_page_1 .column .content .box h2 {
+    margin: 0;
+    padding: 0;
+    font-size: 30px;
+    color: #262626;
+}
+
+.container_page_1 .column .content .box p {
+    color: #262626;
+    font-size: 18px;
+}
+
+.container_page_1 .column .bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.container_page_1 .column.active .bg.bg1 {
+    background: url('https://i.postimg.cc/ZRYZ24Ss/ac-odyssey-min.jpg');
+    background-size: cover;
+/*     background-attachment: fixed; */
+    background-position: center;
+    transition: 0.5s;
+}
+.container_page_1 .column.active .bg.bg2 {
+    background: url('https://i.postimg.cc/x8h2XmbB/borderlands-3-min.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    transition: 0.5s;
+}
+.container_page_1 .column.active .bg.bg3 {
+    background: url('https://i.postimg.cc/1RjPCkYM/god-of-war-4-min.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    transition: 0.5s;
+}
+.container_page_1 .column.active .bg.bg4 {
+    background: url('https://i.postimg.cc/qqzrBwg8/sw-jedi-fallen-order-min.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    transition: 0.5s;
+}
+
+/* =========================================================
+   Móvil (<768px): el layout de 4 columnas al 25% de ancho
+   no tiene espacio para el texto, y el hover no existe en
+   pantallas táctiles. Se apilan verticalmente y las cajas
+   quedan siempre visibles (sin depender de :hover).
+   ========================================================= */
+
+@media (max-width: 767px) {
+    .container_page_1 {
+        height: auto;
+        overflow: visible;
+    }
+
+    .container_page_1 .column {
+        width: 100%;
+        height: 70vh;
+        min-height: 320px;
+        float: none;
+        border-right: none;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+    }
+
+    .container_page_1 .column:last-child {
+        border-bottom: none;
+    }
+
+    .container_page_1 .column .content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 16px;
+    }
+
+    .container_page_1 .column .content h1 {
+        font-size: 4em;
+    }
+
+    .container_page_1 .column .content .box {
+        position: relative;
+        top: auto;
+        transform: none;
+        width: 100%;
+        padding: 24px;
+        opacity: 1;
+    }
+
+    .container_page_1 .column .bg.bg1 {
+        background: url('https://i.postimg.cc/ZRYZ24Ss/ac-odyssey-min.jpg');
+        background-size: cover;
+        background-position: center;
+    }
+
+    .container_page_1 .column .bg.bg2 {
+        background: url('https://i.postimg.cc/x8h2XmbB/borderlands-3-min.jpg');
+        background-size: cover;
+        background-position: center;
+    }
+
+    .container_page_1 .column .bg.bg3 {
+        background: url('https://i.postimg.cc/1RjPCkYM/god-of-war-4-min.jpg');
+        background-size: cover;
+        background-position: center;
+    }
+
+    .container_page_1 .column .bg.bg4 {
+        background: url('https://i.postimg.cc/qqzrBwg8/sw-jedi-fallen-order-min.jpg');
+        background-size: cover;
+        background-position: center;
+    }
+}
+
+
+/* Carousel heading */
+.heading {
+  display: block;
+  text-align: center;
+}
+
+/* Container for the entire carousel */
+.multi-carousel-container {
+  cursor: grab;
+  margin: 0 auto;
+  max-width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Cursor styles for dragging */
+.multi-carousel-container.dragging,
+#multiCarousel.dragging {
+  cursor: grabbing;
+}
+
+/* Wrapper for all slides */
+.multi-carousel-inner {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Individual slide */
+.multi-carousel-item,
+.clone {
+  box-sizing: border-box;
+  flex: 0 0 33.333333%;
+  padding: 0 5px;
+  position: relative; /* Essential for item-number positioning */
+}
+
+/* Control buttons */
+.multi-carousel-control-prev,
+.multi-carousel-control-next {
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  height: 40px;
+  justify-content: center;
+  position: absolute;
+  text-decoration: none;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: background-color 0.3s ease;
+  width: 40px;
+  z-index: 10;
+}
+
+.multi-carousel-control-prev:hover,
+.multi-carousel-control-next:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.multi-carousel-control-prev {
+  left: 10px;
+}
+
+.multi-carousel-control-next {
+  right: 10px;
+}
+
+/* Image container: alto fijo por proporción (2:3, formato póster), no por JS */
+.img-container {
+  aspect-ratio: 2 / 3;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+/* Image styling */
+.img-container img,
+#carouselInner img {
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  pointer-events: none;
+  user-drag: none;
+  width: 100%;
+  -webkit-user-drag: none;
+  transition: transform 0.3s ease;
+}
+
+.img-container:hover img {
+  transform: translateZ(0) scale(1.02);
+}
+
+/* Item number styling - guaranteed visibility */
+.item-number {
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.75);
+  border-radius: 50%;
+  display: inline-flex;
+  font-size: 120%;
+  font-weight: bold;
+  height: 35px;
+  justify-content: center;
+  left: 1rem;
+  position: absolute;
+  top: 1rem;
+  width: 35px;
+  z-index: 2; /* Higher than default but below controls */
+  /* Isolation prevents z-index context issues */
+  isolation: isolate;
+}
+
+/* Carousel cursor styling */
+#multiCarousel {
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+/* Disable text selection during drag */
+#multiCarousel.dragging {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Responsive adjustments for screens smaller than 720px (45em) */
+@media (max-width: 45em) {
+  .multi-carousel-item,
+  .clone {
+    flex: 0 0 100%;
+  }
+}
+
+/* =========================================================
+   Sección "generos" — slider de tarjetas de viaje.
+   Todo queda anidado bajo .generos para no chocar con otras
+   secciones (.item, .content, .button son nombres muy
+   genéricos). .container es relative (no absolute sobre todo
+   el viewport como en el original) para que se quede dentro
+   de su propia sección y no se monte sobre el hero.
+   ========================================================= */
+
+.generos {
+  display: flex;
+  justify-content: center;
+  padding: 40px 16px;
+}
+
+.generos .container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 800px;
+  height: 400px;
+  background: #f5f5f5;
+  box-shadow: 0 30px 50px rgba(0, 0, 0, 0.15);
+  border-radius: 20px;
+}
+
+.generos .slide {
+  border-radius: 20px;
+}
+
+.generos .slide .item {
+  width: 200px;
+  height: 250px;
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  border-radius: 20px;
+  box-shadow: 0 30px 50px #505050;
+  background-position: 50% 50%;
+  background-size: cover;
+  display: inline-block;
+  transition: all 0.5s;
+}
+
+.generos .slide .item:nth-child(1),
+.generos .slide .item:nth-child(2) {
+  top: 0;
+  left: 0;
+  transform: translate(0, 0);
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  transition: all 0.5s;
+}
+
+.generos .slide .item:nth-child(3) {
+  left: 50%;
+}
+.generos .slide .item:nth-child(4) {
+  left: calc(50% + 220px);
+}
+.generos .slide .item:nth-child(5) {
+  left: calc(50% + 440px);
+}
+.generos .slide .item:nth-child(n + 6) {
+  left: calc(50% + 660px);
+  opacity: 0;
+}
+
+.generos .item .content {
+  position: absolute;
+  top: 50%;
+  left: 100px;
+  width: 300px;
+  text-align: left;
+  color: #eee;
+  transform: translate(0, -50%);
+  font-family: system-ui;
+  display: none;
+}
+
+.generos .slide .item:nth-child(2) .content {
+  display: block;
+}
+
+.generos .content .name {
+  font-size: 40px;
+  text-transform: uppercase;
+  font-weight: bold;
+  opacity: 0;
+  animation: animateGeneros 1s ease-in-out 1 forwards;
+}
+
+.generos .content .des {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: animateGeneros 1s ease-in-out 0.3s 1 forwards;
+}
+
+.generos .content button {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.75);
+  transition: all 0.5s;
+  animation: animateGeneros 1s ease-in-out 0.6s 1 forwards;
+}
+
+.generos .content button:hover {
+  background-color: rgb(255, 255, 255);
+}
+
+@keyframes animateGeneros {
+  from {
+    opacity: 0;
+    transform: translate(0, 100px);
+    filter: blur(33px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(0);
+    filter: blur(0);
+  }
+}
+
+.generos .button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 16px;
+  z-index: 2;
+}
+
+.generos .button button {
+  width: 40px;
+  height: 35px;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+.generos .button button:hover {
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.generos .button button:active {
+  transform: scale(1.02);
+}
+
+/* =========================================================
+   Móvil (<768px): con left:100px + width:300px fijos, el
+   texto no cabe en pantallas angostas y la tarjeta que
+   "asoma" (nth-child 3+) queda encima tapando parte del
+   título. Se oculta el asomo y el texto usa todo el ancho.
+   ========================================================= */
+
+@media (max-width: 767px) {
+  .generos .container {
+    height: 360px;
+  }
+
+  .generos .slide .item:nth-child(n + 3) {
+    display: none;
+  }
+
+  .generos .item .content {
+    left: 20px;
+    width: calc(100% - 40px);
+  }
+
+  .generos .content .name {
+    font-size: 28px;
+  }
+}
+
+
+
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: true;
+}
+
+img{
+  max-width: 100%;
+}
+/* Hide radio buttons */
+input[type="radio"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+.informacion {
+  padding: 40px 16px;
+}
+
+.cards{
+  --img-w: 200px;
+  --duration: 300ms;
+  --img-easing: cubic-bezier(0.34, 1.56, 0.64, 1);
+  width: min(100% - 10rem, 800px);
+  margin-inline: auto;
+  display: grid;
+  
+  counter-reset: my-counter;
+}
+
+.card{
+  --cards-grid-cols: auto;
+  --cards-grid-rows: var(--img-w) auto;
+  --cards-grid-gap: 2rem;
+  --cards-footer-justify: center;
+  
+  grid-area: 1/1;
+  display: grid;
+ place-items: center; 
+  grid-template-columns: var(--cards-grid-cols);
+  grid-template-rows: var(--cards-grid-rows);
+  gap: var(--cards-grid-gap);
+  
+}
+
+@media (800px < width){
+  .card{
+      --cards-grid-cols: var(--img-w) auto;
+      --cards-grid-rows: auto;
+      --cards-grid-gap: 4rem;
+      --cards-footer-justify: start;
+  }
+}
+
+
+.card-img{
+  width: 200px;
+  height: 200px;
+  aspect-ratio: 1 / 1 ;
+  rotate: var(--angle, 0deg);
+  border-radius: 10px;
+  border: 3px solid #FFF;
+  overflow: hidden;
+  transform-origin: center;
+  object-fit: cover;
+  box-shadow: 0 0 5px 3px rgba(0 0 0 / .05);
+}
+
+
+
+input:nth-of-type(1):checked + .card ~ .card > .card-img{
+  animation: straighten-img-1 calc(var(--duration) * 2) forwards;
+  animation-timing-function: var(--img-easing);
+}
+.card:has(~input:nth-of-type(2):checked) > .card-img,
+input:nth-of-type(2):checked + .card ~ .card > .card-img{
+  animation: straighten-img-2 calc(var(--duration) * 2) forwards;
+  animation-timing-function: var(--img-easing);
+}
+.card:has(~input:nth-of-type(3):checked) > .card-img,
+input:nth-of-type(3):checked + .card ~ .card > .card-img{
+  animation: straighten-img-3 calc(var(--duration) * 2) forwards;
+  animation-timing-function: var(--img-easing);
+}
+.card:has(~input:nth-of-type(4):checked) > .card-img,
+input:nth-of-type(4):checked + .card ~ .card > .card-img{
+  animation: straighten-img-4 calc(var(--duration) * 2) forwards;
+  animation-timing-function: var(--img-easing);
+}
+.card:has(~input:nth-of-type(5):checked) > .card-img,
+input:nth-of-type(5):checked + .card ~ .card > .card-img{
+  animation: straighten-img-5 calc(var(--duration) * 2) forwards;
+  animation-timing-function: var(--img-easing);
+}
+.card:has(~input:nth-of-type(6):checked) > .card-img,
+input:nth-of-type(6):checked + .card ~ .card > .card-img{
+  animation: straighten-img-6 calc(var(--duration) * 2) forwards;
+  animation-timing-function: var(--img-easing);
+}
+.card:has(~input:nth-of-type(7):checked) > .card-img,
+input:nth-of-type(7):checked + .card ~ .card > .card-img{
+  animation: straighten-img-7 calc(var(--duration) * 2) forwards;
+  animation-timing-function: var(--img-easing);
+}
+/* as CSS can't remove animations, we change the animation according to which checkbox is checked  - all animations are the same (would be simpler with SCSS) */
+@keyframes straighten-img-1 { 50%{ --angle: 0deg;} }
+@keyframes straighten-img-2 { 50%{ --angle: 0deg;} }
+@keyframes straighten-img-3 { 50%{ --angle: 0deg;} }
+@keyframes straighten-img-4 { 50%{ --angle: 0deg;} }
+@keyframes straighten-img-5 { 50%{ --angle: 0deg;} }
+@keyframes straighten-img-6 { 50%{ --angle: 0deg;} }
+@keyframes straighten-img-7 { 50%{ --angle: 0deg;} }
+
+
+/* stacking order - these are updated according to which card is selected */
+.card{
+  z-index: -1;
+}
+input:checked + .card{
+  z-index:10 !important;
+}
+/* next card checked - place behind */
+.card:has(+input:checked){
+  z-index:9;
+}
+/* next card +1 checked - place behind */
+.card:has(+input + .card + input:checked){
+  z-index:8;
+}
+/* next card +2 checked - place behind */
+.card:has(+input + .card +input + .card + input:checked){
+  z-index:7;
+}
+/* next card +3 checked - place behind */
+.card:has(+input + .card +input + .card +input + .card + input:checked){
+  z-index:6;
+}
+/* next card +4 checked - place behind */
+.card:has(+input + .card +input + .card +input + .card +input + .card + input:checked){
+  z-index:5;
+}
+/* next card +5 checked - place behind */
+.card:has(+input + .card +input + .card +input +input + .card +input + .card +input + .card + input:checked){
+  z-index:4;
+}
+/* next card +6 checked - place behind */
+.card:has(+input + .card +input + .card +input  + .card +input +input + .card +input + .card +input + .card + input:checked){
+  z-index:3;
+}
+
+.card-data{
+  display: grid;
+  gap: 1rem;
+}
+.card-data > .card-num{
+  opacity: var(--data-opacity, 0);
+  font-size: .8rem;
+  color: #666;
+}
+.card-data > p{
+  font-size: 0.9rem;
+
+}
+.card-data > h2,
+.card-data > p{
+  transition: var(--duration) ease-in-out;
+  transition-delay: var(--data-delay,0ms);
+  opacity: var(--data-opacity, 0);
+  translate: 0 var(--data-y, 20px);
+}
+.card-data > footer{
+  display: flex;
+  justify-content: var(--cards-footer-justify);
+  gap: 2rem;
+}
+.card-data > footer label{
+  margin-block-start: auto;
+  cursor: pointer;
+  pointer-events: var(--card-events, none);
+  opacity: var(--data-opacity, 0);
+  transition: color var(--duration) ease-in-out;
+  color: var(--label-clr-txt,#000);
+  background-color:var(--label-clr-bg,#EEE);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  aspect-ratio: 1/1;
+  display: grid;
+  place-content: center;
+  transition: background-color 300ms ease-in-out,color  300ms ease-in-out;
+}
+
+
+input:checked:focus-visible + .card > .card-data > footer label,
+.card-data > footer label:hover{
+  --label-clr-txt: #FFF;
+  --label-clr-bg: steelblue;
+}
+
+input:checked + .card{
+  --data-opacity: 1;
+  --data-y: 0;
+  --data-delay: var(--duration);
+  --card-events: auto;
+  transition: z-index;
+  transition-delay: 300ms;
+  /*z-index: 1;*/
+}
+
+input:checked +.card > .card-img{
+  animation: reveal-img calc(var(--duration) * 2) forwards;
+}
+
+@keyframes reveal-img{
+  50%{
+    translate: -150% 0;
+    --angle: 0deg;
+  }
+}
+
+.carousel {
+		--items: 6;
+		--carousel-duration: 40s;
+		@media (width > 600px) {
+			--carousel-duration: 30s;
+		}
+		--carousel-width: min(
+			80vw,
+			800px
+		); /* note - it will "break" if it gets too wide and there aren't enough items */
+		--carousel-item-width: 280px;
+		--carousel-item-height: 450px;
+		--carousel-item-gap: 2rem;
+
+		--clr-cta: rgb(0, 132, 209);
+
+		position: relative;
+		width: var(--carousel-width);
+		height: var(--carousel-item-height);
+		overflow: clip;
+
+		&[mask] {
+			/* fade out on sides */
+			mask-image: linear-gradient(
+				to right,
+				transparent,
+				black 10% 90%,
+				transparent
+			);
+		}
+
+		&[reverse] > article {
+			animation-direction: reverse;
+		}
+		/* hover pauses animation */
+		&:hover > article {
+			animation-play-state: paused;
+		}
+	}
+	.carousel > article {
+		position: absolute;
+		top: 0;
+		left: calc(100% + var(--carousel-item-gap));
+		width: var(--carousel-item-width);
+		height: var(--carousel-item-height);
+		display: grid;
+		grid-template-rows: 200px auto 1fr auto;
+		gap: 0.25rem;
+		border: 1px solid light-dark(rgba(0 0 0 / 0.25), rgba(255 255 255 / 0.15));
+
+		padding-block-end: 1rem;
+		border-radius: 10px;
+		background: light-dark(white, rgba(255 255 255 / 0.05));
+		color: light-dark(rgb(49, 65, 88), white);
+
+		/* animation */
+		will-change: transform;
+		animation-name: marquee;
+		animation-duration: var(--carousel-duration);
+		animation-timing-function: linear;
+		animation-iteration-count: infinite;
+		animation-delay: calc(
+			var(--carousel-duration) / var(--items) * 1 * var(--i) * -1
+		);
+		&:nth-child(1) {
+			--i: 0;
+		}
+		&:nth-child(2) {
+			--i: 1;
+		}
+		&:nth-child(3) {
+			--i: 2;
+		}
+		&:nth-child(4) {
+			--i: 3;
+		}
+		&:nth-child(5) {
+			--i: 4;
+		}
+		&:nth-child(6) {
+			--i: 5;
+		}
+		&:nth-child(7) {
+			--i: 6;
+		}
+		&:nth-child(8) {
+			--i: 7;
+		}
+	}
+	.carousel img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+
+		border-radius: 10px 10px 0 0;
+	}
+	.carousel > article > *:not(img) {
+		padding: 0 1rem;
+	}
+	.carousel > article > div {
+		grid-row: span 2;
+		display: grid;
+		grid-template-rows: subgrid;
+		font-size: 0.8rem;
+	}
+	.carousel > article h2 {
+		font-size: 1.2rem;
+		font-weight: 300;
+		padding-block: 0.75rem 0.25rem;
+		margin: 0;
+	}
+	.carousel > article p {
+		margin: 0;
+	}
+	.carousel > article a {
+		text-decoration: none;
+		text-transform: lowercase;
+		border: 1px solid var(--clr-cta);
+		color: light-dark(var(--clr-cta), white);
+		border-radius: 3px;
+		padding: 0.25rem 0.5rem;
+		place-self: start;
+		transition: 150ms ease-in-out;
+		&:hover,
+		&:focus-visible {
+			background-color: var(--clr-cta);
+			color: white;
+			outline: none;
+		}
+	}
+
+@keyframes marquee {
+	100% {
+		transform: translateX(
+			calc(
+				(var(--items) * (var(--carousel-item-width) + var(--carousel-item-gap))) *
+					-1
+			)
+		);
+	}
+}
+
+.populares {
+	display: flex;
+	justify-content: center;
+	padding: 40px 16px;
+}
